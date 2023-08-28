@@ -98,7 +98,7 @@ const seed_posts = [
   },
 ];
 
-const seed_comments = [
+const seed_categories = [
   {
     content_comments: 'Comentário 1',
     user_id: 1,
@@ -116,6 +116,7 @@ const seed_comments = [
   },
 ];
 
+/*
 async function main() {
   console.log('Iniciando seed...');
   const users = await prisma.user.createMany({
@@ -144,3 +145,4 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+*/
