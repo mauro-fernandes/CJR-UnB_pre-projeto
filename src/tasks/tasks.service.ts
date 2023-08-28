@@ -13,7 +13,7 @@ export class TasksService {
   }
 
   async findAll() {
-    return await this.prisma.task.findMany();
+    return await this.prisma.task.findMany({ include: { tags: true } });
   }
 
   async findOne(id: number) {
