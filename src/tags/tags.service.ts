@@ -33,4 +33,12 @@ export class TagsService {
     const tag = await this.prisma.tag.delete({ where: { id } });
     return tag;
   }
+
+  async findTasks(id: number) {
+    const tag = await this.prisma.tag.findMany({
+      where: { id },
+      include: { tasks: true },
+    });
+    return tag;
+  }
 }

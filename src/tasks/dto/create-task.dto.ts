@@ -5,7 +5,7 @@ export class CreateTaskDto {
   id?: number;
 
   @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Text is required' })
   @Length(0, 10000, { message: 'Text is too long' })
   name: string;
 

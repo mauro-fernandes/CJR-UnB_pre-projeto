@@ -39,4 +39,54 @@ export class TasksController {
   remove(@Param('id') id: string) {
     return this.tasksService.remove(+id);
   }
+
+  @Post(':taskId/assign_tag/:tagId')
+  assignTag(@Param('taskId') taskId: string, @Param('tagId') tagId: string) {
+    return this.tasksService.assignTag(+taskId, +tagId);
+  }
+
+  @Post(':taskId/remove_tag/:tagId')
+  removeTag(@Param('taskId') taskId: string, @Param('tagId') tagId: string) {
+    return this.tasksService.removeTag(+taskId, +tagId);
+  }
+
+  @Post(':id/complete')
+  complete(@Param('id') id: string) {
+    return this.tasksService.complete(+id);
+  }
+
+  @Post(':id/activate')
+  activate(@Param('id') id: string) {
+    return this.tasksService.activate(+id);
+  }
+
+  @Post('complete_all')
+  completeAll() {
+    return this.tasksService.completeAll();
+  }
+
+  @Post('clear_completed')
+  clearCompleted() {
+    return this.tasksService.clearCompleted();
+  }
+
+  @Post('findCompleted')
+  findCompleted() {
+    return this.tasksService.findCompleted();
+  }
+
+  @Post('findActive')
+  findActive() {
+    return this.tasksService.findActive();
+  }
+
+  @Post('deleteCompleted')
+  deleteCompleted() {
+    return this.tasksService.deleteCompleted();
+  }
+
+  @Post('findByName/:name')
+  findByName(@Param('name') name: string) {
+    return this.tasksService.findByName(name);
+  }
 }

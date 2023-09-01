@@ -28,7 +28,7 @@ model Task {
   id        Int      @id @default(autoincrement())
   name      String
   isActive  Boolean? @default(true)
-  tags      Tag[]    @relation("TaskToTag") // n to m relation with Tag
+  tags      Tag[]    //n to m implicit relation with Tag
   author    User?    @relation(fields: [authorId], references: [id]) // 1 to n relation with User
   authorId  String?
   createdAt DateTime @default(now())
@@ -38,6 +38,6 @@ model Task {
 model Tag {
   id        Int      @id @default(autoincrement())
   name      String   @unique
-  tasks     Task[]   @relation("TaskToTag") // n to m relation with Task
+  tasks     Task[]   // n to m implicit relation with Task
   createdAt DateTime @default(now())
 }
