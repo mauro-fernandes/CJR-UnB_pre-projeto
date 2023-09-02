@@ -45,9 +45,9 @@ export class TasksController {
     return this.tasksService.assignTag(+taskId, +tagId);
   }
 
-  @Post(':taskId/remove_tag/:tagId')
+  @Post(':taskId/unsign_tag/:tagId')
   removeTag(@Param('taskId') taskId: string, @Param('tagId') tagId: string) {
-    return this.tasksService.removeTag(+taskId, +tagId);
+    return this.tasksService.unsignTag(+taskId, +tagId);
   }
 
   @Post(':id/complete')

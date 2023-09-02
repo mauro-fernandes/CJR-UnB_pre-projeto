@@ -42,7 +42,7 @@ export class TasksService {
     return task;
   }
 
-  async removeTag(taskId: number, tagId: number) {
+  async unsignTag(taskId: number, tagId: number) {
     const task = await this.prisma.task.update({
       where: { id: taskId },
       data: { tags: { disconnect: { id: tagId } } },
