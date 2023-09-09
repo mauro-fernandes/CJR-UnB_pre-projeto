@@ -3,10 +3,8 @@
   "version": "0.0.1",
   "prisma": {
     "seed": "ts-node ./src/database/seed.ts",
-    "seed: init": "ts node ./src/seeds/seed.ts",
-    "seed: run": "ts-node ./src/seeds/seed.ts",
-    "seed: reset": "ts-node ./src/seeds/seed.ts --reset",
-    "seed: dev": "ts-node ./src/seeds/seed.ts --dev"
+    "seed :reset": "ts-node ./src/database/seed.ts --reset",
+    "seed :dev": "ts-node ./src/database/seed.ts --dev"
   },
   "description": "",
   "author": "",
@@ -31,6 +29,7 @@
     "@nestjs/core": "^10.0.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/swagger": "^7.1.10",
     "@prisma/client": "^5.2.0",
     "@types/validator": "^13.11.1",
     "class-transformer": "^0.5.1",

@@ -37,3 +37,6 @@ lerna-debug.log*
 # environment variables
 .env
 .env.*
+
+# misc
+view/index.html

@@ -42,6 +42,6 @@ export class TagsController {
 
   @Get(':id/tasks')
   findTasks(@Param('id') id: string) {
-    return this.tagsService.findTasks(+id);
+    return this.tagsService.tasksByTag(+id);
   }
 }

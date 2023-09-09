@@ -4,30 +4,30 @@ const prisma = new PrismaService();
 
 const seed_users = [
   {
-    email: 'ana@unb.br',
-    name: 'Ana Beatriz Duarte Almeida',
-    username: 'ana',
-    password: '123456',
-    gender: null,
-    role: null,
-    admin: false,
-  },
-  {
     email: 'maurofda@unb.br',
     name: 'Mauro Fernandes de Almeida',
     username: 'maurofda',
     password: '123456',
-    gender: null,
-    role: null,
+    gender: 'M',
+    role: 'DFO',
+    admin: true,
+  },
+  {
+    email: 'ana@unb.br',
+    name: 'Ana Beatriz',
+    username: 'ana',
+    password: '123456',
+    gender: 'F',
+    role: 'operator',
     admin: false,
   },
   {
     email: 'crisczar@unb.br',
     name: 'Cristina Almeida',
-    username: 'crisczar',
+    username: 'cris',
     password: '123456',
-    gender: null,
-    role: null,
+    gender: 'F',
+    role: 'chief',
     admin: false,
   },
   {
@@ -35,7 +35,7 @@ const seed_users = [
     name: 'Mateus Almeida',
     username: 'mateus',
     password: '123456',
-    gender: 'male',
+    gender: 'M',
     role: 'operator',
     admin: false,
   },
@@ -83,7 +83,6 @@ const seed_users = [
     role: 'trainee',
   },
   {
-    id: '1',
     username: 'admin',
     password: '123456',
     gender: 'M',
@@ -113,6 +112,14 @@ const seed_users = [
   },
 ];
 
+const seed_tags = [
+  { id: 1, name: 'UnB (noite)' },
+  { id: 2, name: 'Exercícios físicos (diurno)' },
+  { id: 3, name: 'Trabalho (CEMSL)' },
+  { id: 4, name: 'UnB (diurno)' },
+  { id: 5, name: 'Saúde' },
+];
+
 const seed_tasks = [
   {
     id: 1,
@@ -134,17 +141,42 @@ const seed_tasks = [
     name: 'estudar Prisma ORM e NestJS',
     isActive: true,
   },
+  {
+    id: 5,
+    name: 'tomar creatina',
+    isActive: true,
+  },
 ];
 
-const seed_tags = [
-  { id: 1, name: 'UnB (noite)' },
-  { id: 2, name: 'exercícios físicos (diurno)' },
-  { id: 3, name: 'Trabalho (CEMSL)' },
-  { id: 4, name: 'UnB (diurno)' },
+const seed_connections = [
+  {
+    id: 1,
+    tags: {
+      connect: [{ id: 2 }],
+    },
+  },
+  {
+    id: 2,
+    tags: {
+      connect: [{ id: 5 }],
+    },
+  },
+  {
+    id: 3,
+    tags: {
+      connect: [{ id: 2 }],
+    },
+  },
+  {
+    id: 4,
+    tags: {
+      connect: [{ id: 1 }, { id: 3 }],
+    },
+  },
 ];
 
 async function main() {
-  console.log('Starting seed...');
+  console.log('\nStarting seed...');
 
   const users = await prisma.user.createMany({
     data: seed_users,
@@ -164,7 +196,55 @@ async function main() {
   });
   console.log('Tasks created: ', tasks);
 
-  console.log('Seed finished!');
+  console.log('Assigning tags to tasks...');
+  let j = 0;
+  for (const i of seed_connections) {
+    const tagAssigned = await prisma.task.findUnique({
+      where: { id: i.id },
+      select: { tags: { select: { id: true } } },
+    });
+    const alreadyAssigned = tagAssigned?.tags.length;
+    if (typeof alreadyAssigned === 'number' && alreadyAssigned > 0) {
+      continue;
+    }
+    await prisma.task.update({
+      where: { id: i.id },
+      data: { tags: i.tags },
+    });
+    j += i.tags.connect.length;
+  }
+  console.log('Tags assigns: ', { count: j });
+
+  console.log('Assigning users to tasks...');
+  let k = 0;
+  for (const i of seed_tasks) {
+    const haveUser = await prisma.task.findUnique({
+      where: { id: i.id },
+      select: { id: true, authorId: true, author: { select: { id: true } } },
+    });
+
+    const alreadyAssigned = haveUser?.author?.id.length;
+    if (typeof alreadyAssigned === 'number' && alreadyAssigned > 0) {
+      continue;
+    }
+
+    const user = await prisma.user.findFirst({
+      select: { id: true },
+    });
+    if (!user) {
+      console.log('No user found to assign to task: ', i);
+      continue;
+    }
+
+    await prisma.task.update({
+      where: { id: i.id },
+      data: { authorId: user?.id },
+    });
+    k += 1;
+  }
+  console.log('Total `tasks.authorId` updates : ', { count: k });
+
+  console.log('\nSeed finished!');
 }
 
 main()
