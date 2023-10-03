@@ -8,7 +8,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   const options = new DocumentBuilder()
-    .setTitle('PraFazê! Seu app de tarefas')
+    .setTitle('PraFazêDuMauro! Seu app de tarefas')
     .setDescription('PraFazê API description')
     .setVersion('1.0')
     .addTag('ToDo List')
