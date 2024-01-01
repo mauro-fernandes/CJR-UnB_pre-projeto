@@ -11,17 +11,30 @@ export class CreateTaskDto {
   @IsOptional()
   id?: number;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: `Task name`,
+    example: 'Learn NestJS',
+    format: 'string (1-10000 characters)',
+  })
   @IsString()
   @IsNotEmpty({ message: 'Text is required' })
   @Length(0, 10000, { message: 'Text is too long' })
   name: string;
 
-  @ApiProperty({ required: false, default: true })
+  @ApiProperty({
+    required: false,
+    default: true,
+    format: 'boolean',
+    example: true,
+  })
   @IsBoolean()
   isActive?: boolean;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+    format: 'string',
+    example: '1',
+  })
   @IsOptional()
   @IsString()
   authorId?: string;

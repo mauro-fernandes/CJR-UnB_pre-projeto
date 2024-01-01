@@ -2,13 +2,13 @@ import { IsString, IsOptional, IsNotEmpty, Length } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateTagDto {
-  @ApiProperty({
-    description: `Tag id`,
-    example: 1,
-    required: false,
-    format: 'int32: 4 bytes integer',
-  })
   @IsOptional()
+  // @ApiProperty({
+  //   description: `Tag id`,
+  //   example: 1,
+  //   required: false,
+  //   format: 'int32: 4 bytes integer',
+  // })
   id?: number;
 
   @ApiProperty({

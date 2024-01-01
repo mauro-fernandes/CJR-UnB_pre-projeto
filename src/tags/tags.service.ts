@@ -12,6 +12,7 @@ export class TagsService {
     const tag = await this.prisma.tag
       .create({ data: createTagDto })
       .catch((e: Exception) => {
+        console.error(e);
         return e;
       });
     return tag;
